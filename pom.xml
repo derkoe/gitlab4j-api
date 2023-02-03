@@ -7,7 +7,7 @@
 	<groupId>org.gitlab4j</groupId>
 	<artifactId>gitlab4j-api</artifactId>
 	<packaging>jar</packaging>
-	<version>5.1.0-SNAPSHOT</version>
+	<version>6.0.0-SNAPSHOT</version>
 	<name>GitLab4J-API - GitLab API Java Client</name>
 	<description>GitLab4J-API (gitlab4j-api) provides a full featured Java client library for working with GitLab repositories and servers via the GitLab REST API.</description>
 	<url>https://github.com/gitlab4j/gitlab4j-api</url>
@@ -45,26 +45,24 @@
 	</developers>
 
 	<properties>
-		<java.level>8</java.level>
-		<java.source.version>1.8</java.source.version>
-		<java.target.version>1.8</java.target.version>
+		<java.version>17</java.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<jersey.version>2.35</jersey.version>
-		<jackson.version>2.12.4</jackson.version>
-		<servlet.version>4.0.4</servlet.version>
-		<activation.version>1.2.2</activation.version>
+		<jersey.version>3.1.1</jersey.version>
+		<jackson.version>2.13.2.2</jackson.version>
+		<servlet.version>6.0.0</servlet.version>
+		<activation.version>2.1.1</activation.version>
 
-		<junit.version>5.8.2</junit.version>
+		<junit.version>5.9.2</junit.version>
 		<testcontainers.version>1.15.3</testcontainers.version>
-		<mockito.version>4.4.0</mockito.version>
+		<mockito.version>4.11.0</mockito.version>
 		<hamcrest.version>1.3</hamcrest.version>
 		<systemRules.version>1.19.0</systemRules.version>
 
-		<changelog-lib.version>1.59</changelog-lib.version>
-		<bnd.version>5.3.0</bnd.version>
+		<changelog-lib.version>1.95.5</changelog-lib.version>
+		<bnd.version>6.4.0</bnd.version>
 
 		<gitlab.version>12.9.2-ce.0</gitlab.version>
 		<gitlab.autoremove-container>true</gitlab.autoremove-container>
@@ -97,7 +95,7 @@
 
 			<plugin>
 				<artifactId>maven-scm-plugin</artifactId>
-				<version>1.9.5</version>
+				<version>1.13.0</version>
 				<configuration>
 					<tag>${project.artifactId}-${project.version}</tag>
 				</configuration>
@@ -106,10 +104,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
+				<version>3.10.1</version>
 				<configuration>
-					<source>${java.source.version}</source>
-					<target>${java.target.version}</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 				<executions>
 					<execution>
@@ -138,7 +136,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -152,9 +150,9 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>3.4.1</version>
 				<configuration>
-					<source>8</source>
+					<source>${java.version}</source>
 				</configuration>
 				<executions>
 					<execution>
@@ -169,7 +167,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>3.3.0</version>
 				<configuration>
 					<archive>
 						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
@@ -180,7 +178,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.7</version>
+				<version>0.8.8</version>
 				<executions>
 					<execution>
 						<id>default-prepare-agent</id>
@@ -223,7 +221,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M5</version>
+				<version>3.0.0-M8</version>
 				<configuration>
 					<systemPropertyVariables>
 						<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
@@ -236,7 +234,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>3.0.0-M5</version>
+				<version>3.0.0-M8</version>
 				<configuration>
 					<groups>integration</groups>
 					<includes>
@@ -256,15 +254,18 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.0.0-M2</version>
+				<version>3.2.1</version>
 				<configuration>
 					<rules>
 						<enforceBytecodeVersion>
-							<maxJdkVersion>1.8</maxJdkVersion>
+							<maxJdkVersion>${java.version}</maxJdkVersion>
 							<ignoreClasses>
 								<ignoreClass>module-info</ignoreClass>
 							</ignoreClasses>
 						</enforceBytecodeVersion>
+						<requireMavenVersion>
+							<version>3.3.9</version>
+						</requireMavenVersion>
 					</rules>
 				</configuration>
 				<executions>
@@ -279,35 +280,15 @@
 					<dependency>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>extra-enforcer-rules</artifactId>
-						<version>1.3</version>
+						<version>1.6.1</version>
 					</dependency>
 				</dependencies>
 			</plugin>
 
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>animal-sniffer-maven-plugin</artifactId>
-				<version>1.20</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>check</goal>
-						</goals>
-						<id>check</id>
-					</execution>
-				</executions>
-				<configuration>
-					<signature>
-						<groupId>org.codehaus.mojo.signature</groupId>
-						<artifactId>java1${java.level}</artifactId>
-					</signature>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.30.0</version>
+				<version>0.40.3</version>
 				<configuration>
 					<images>
 						<image>
@@ -451,22 +432,10 @@
 		<dependency>
 			<groupId>uk.org.webcompere</groupId>
 			<artifactId>system-stubs-jupiter</artifactId>
-			<version>1.2.0</version>
+			<version>2.0.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<dependencyManagement>
-		<dependencies>
-			<!-- Needed for animal-sniffer -->
-			<dependency>
-				<groupId>org.codehaus.mojo.signature</groupId>
-				<artifactId>java18</artifactId>
-				<version>1.0</version>
-				<type>signature</type>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<profiles>
 		<profile>
